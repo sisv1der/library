@@ -61,8 +61,12 @@ public class BookController {
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
 
-    /*@PatchMapping("/{id}")
-    public ResponseEntity<Book> patchBook(@RequestBody Book book, @PathVariable Long id) {
-
-    }*/
+    @PatchMapping("/{id}")
+    public ResponseEntity<BookDTO> patchBook(@RequestBody BookDTO bookDto, @PathVariable Long id) {
+        BookDTO oldBook = bookService.patchBook(bookDto, id);
+        if (oldBook == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(oldBook, HttpStatus.OK);
+    }
 }
