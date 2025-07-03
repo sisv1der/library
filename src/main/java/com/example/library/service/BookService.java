@@ -57,4 +57,18 @@ public class BookService {
         oldBook.setAuthor(book.getAuthor());
         return BookMapper.toBookDTO(oldBook);
     }
+
+    public BookDTO patchBook(BookDTO book, Long id) {
+        if (id == null) {
+            return null;
+        }
+        Book oldBook = getBookById(id);
+        if (oldBook == null) {
+            return null;
+        }
+        oldBook.setTitle(book.getTitle() != null ? book.getTitle() : oldBook.getTitle());
+        oldBook.setAuthor(book.getAuthor() != null ? book.getAuthor() : oldBook.getAuthor());
+
+        return BookMapper.toBookDTO(oldBook);
+    }
 }
