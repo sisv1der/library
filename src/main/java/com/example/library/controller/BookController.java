@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/books/")
 public class BookController {
     private final BookService bookService;
 
@@ -16,7 +17,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books")
+    @GetMapping("/")
     public ResponseEntity<List<Book>> getBooks() {
         List<Book> books = bookService.getAllBooks();
         if (books.isEmpty()) {
@@ -25,7 +26,7 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
         Book book = bookService.getBookById(id);
         if (book == null) {
@@ -34,16 +35,16 @@ public class BookController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    @PostMapping("/books")
+    @PostMapping("/")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
         Book newBook = bookService.addBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
-        boolean b = bookService.deleteBookById(id);
-        if (b) {
+        boolean deleted = bookService.deleteBookById(id);
+        if (deleted) {
             return new ResponseEntity<>("Book deleted.", HttpStatus.OK);
         }
         else {
