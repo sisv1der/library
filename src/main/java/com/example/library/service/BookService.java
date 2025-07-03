@@ -3,11 +3,12 @@ package com.example.library.service;
 import com.example.library.model.Book;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookService {
-    private List<Book> books;
+    private final List<Book> books = new ArrayList<>();
 
     public List<Book> getAllBooks() {
         return books;
