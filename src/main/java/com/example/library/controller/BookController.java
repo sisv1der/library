@@ -51,4 +51,18 @@ public class BookController {
             return new ResponseEntity<>("Book not found.", HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable Long id) {
+        Book oldBook = bookService.updateBook(book, id);
+        if (oldBook == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    /*@PatchMapping("/{id}")
+    public ResponseEntity<Book> patchBook(@RequestBody Book book, @PathVariable Long id) {
+
+    }*/
 }
