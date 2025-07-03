@@ -1,7 +1,11 @@
 package com.example.library.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class BookDTO {
+    @NotBlank(message = "Title must not be empty!")
     private String title;
+    @NotBlank(message = "Author must not be empty!")
     private String author;
 
     public String getTitle() {
