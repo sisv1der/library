@@ -1,6 +1,6 @@
 package com.example.library.controller;
 
-import com.example.library.model.Book;
+import com.example.library.model.BookDTO;
 import com.example.library.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class BookController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Book>> getBooks() {
-        List<Book> books = bookService.getAllBooks();
+    public ResponseEntity<List<BookDTO>> getBooks() {
+        List<BookDTO> books = bookService.getAllBooks();
         if (books.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -27,8 +27,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable Long id) {
-        Book book = bookService.getBookById(id);
+    public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
+        BookDTO book = bookService.getDtoById(id);
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -36,8 +36,8 @@ public class BookController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        Book newBook = bookService.addBook(book);
+    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO book) {
+        BookDTO newBook = bookService.addBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
 
@@ -53,8 +53,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable Long id) {
-        Book oldBook = bookService.updateBook(book, id);
+    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDto, @PathVariable Long id) {
+        BookDTO oldBook = bookService.updateBook(bookDto, id);
         if (oldBook == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -1,10 +1,8 @@
 package com.example.library.service;
 
 import com.example.library.model.Book;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.example.library.model.BookDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +11,31 @@ import java.util.List;
 public class BookService {
     private final List<Book> books = new ArrayList<>();
 
-    public List<Book> getAllBooks() {
-        return books;
+    public List<BookDTO> getAllBooks() {
+
+        return books.stream()
+                .map(BookMapper::toBookDTO)
+                .toList();
+    }
+
+    public BookDTO getDtoById(Long id) {
+        return books.stream()
+                .filter(book -> book.getId().equals(id))
+                .findFirst()
+                .map(BookMapper::toBookDTO)
+                .orElse(null);
     }
 
     public Book getBookById(Long id) {
-        return books
-                .stream()
+        return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public Book addBook(Book book) {
-        books.add(book);
+    public BookDTO addBook(BookDTO book) {
+        Long bookId = 100L;
+        books.add(new Book(bookId, book.getTitle(), book.getAuthor()));
         return book;
     }
 
@@ -34,14 +43,8 @@ public class BookService {
         return books.removeIf(book -> book.getId().equals(id));
     }
 
-    public Book updateBook(Book book, Long id) {
+    public BookDTO updateBook(BookDTO book, Long id) {
         if (id == null) {
-            return null;
-        }
-        if (book.getId() == null) {
-            return null;
-        }
-        if (!book.getId().equals(id)) {
             return null;
         }
 
@@ -52,6 +55,6 @@ public class BookService {
 
         oldBook.setTitle(book.getTitle());
         oldBook.setAuthor(book.getAuthor());
-        return oldBook;
+        return BookMapper.toBookDTO(oldBook);
     }
 }
