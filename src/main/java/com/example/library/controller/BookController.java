@@ -58,7 +58,7 @@ public class BookController {
         if (oldBook == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
 
     /*@PatchMapping("/{id}")
