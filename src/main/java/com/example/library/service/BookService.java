@@ -27,7 +27,7 @@ public class BookService {
         return book;
     }
 
-    public void deleteBookById(Long id) {
-        books.removeIf(book -> book.getId().equals(id));
+    public boolean deleteBookById(Long id) {
+        return books.removeIf(book -> book.getId().equals(id));
     }
 }
