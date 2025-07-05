@@ -35,8 +35,7 @@ public class BookService {
     }
 
     public BookDTO addBook(BookDTO book) {
-        Long bookId = 100L;
-        books.add(new Book(bookId, book.getTitle(), book.getAuthor()));
+        books.add(new Book(book.getTitle(), book.getAuthor()));
         return book;
     }
 
