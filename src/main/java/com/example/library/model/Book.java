@@ -1,18 +1,22 @@
 package com.example.library.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "book_id")
     private Long id;
+    @Column(name = "book_title", unique = true, nullable = false)
     private String title;
+    @Column(name = "book_author", nullable = false)
     private String author;
 
     public Book() {
-        id = 0L;
-        title = "";
-        author = "";
     }
 
-    public Book(Long id, String title, String author) {
-        this.id = id;
+    public Book(String title, String author) {
         this.title = title;
         this.author = author;
     }
