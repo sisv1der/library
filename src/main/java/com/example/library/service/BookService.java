@@ -24,9 +24,7 @@ public class BookService {
     }
 
     public BookDTO getDtoById(Long id) {
-        return bookRepository.findById(id).stream()
-                .filter(book -> book.getId().equals(id))
-                .findFirst()
+        return bookRepository.findById(id)
                 .map(BookMapper::toBookDTO)
                 .orElse(null);
     }
