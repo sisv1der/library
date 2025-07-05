@@ -2,6 +2,7 @@ package com.example.library.service;
 
 import com.example.library.model.Book;
 import com.example.library.model.BookDTO;
+import com.example.library.model.BookPatchDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class BookService {
         return BookMapper.toBookDTO(oldBook);
     }
 
-    public BookDTO patchBook(BookDTO book, Long id) {
+    public BookPatchDTO patchBook(BookPatchDTO book, Long id) {
         if (id == null) {
             return null;
         }
@@ -69,6 +70,6 @@ public class BookService {
         oldBook.setTitle(book.getTitle() != null ? book.getTitle() : oldBook.getTitle());
         oldBook.setAuthor(book.getAuthor() != null ? book.getAuthor() : oldBook.getAuthor());
 
-        return BookMapper.toBookDTO(oldBook);
+        return BookPatchMapper.toBookPatchDTO(oldBook);
     }
 }
