@@ -1,7 +1,9 @@
 package com.example.library.controller;
 
 import com.example.library.model.BookDTO;
+import com.example.library.model.BookPatchDTO;
 import com.example.library.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,7 @@ public class BookController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO book) {
+    public ResponseEntity<BookDTO> addBook(@Valid @RequestBody BookDTO book) {
         BookDTO newBook = bookService.addBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
@@ -53,7 +55,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDto, @PathVariable Long id) {
+    public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDto, @PathVariable Long id) {
         BookDTO oldBook = bookService.updateBook(bookDto, id);
         if (oldBook == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,8 +64,8 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<BookDTO> patchBook(@RequestBody BookDTO bookDto, @PathVariable Long id) {
-        BookDTO oldBook = bookService.patchBook(bookDto, id);
+    public ResponseEntity<BookPatchDTO> patchBook(@RequestBody BookPatchDTO bookDto, @PathVariable Long id) {
+        BookPatchDTO oldBook = bookService.patchBook(bookDto, id);
         if (oldBook == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

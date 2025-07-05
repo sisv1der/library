@@ -1,7 +1,5 @@
 package com.example.library.model;
 
-import jakarta.validation.constraints.NotBlank;
-
 public class BookPatchDTO {
     private String title;
     private String author;
