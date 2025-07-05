@@ -30,8 +30,7 @@ public class BookService {
     }
 
     public BookDTO addBook(BookDTO book) {
-        bookRepository.save(BookMapper.toBook(book));
-        return book;
+        return BookMapper.toBookDTO(bookRepository.save(BookMapper.toBook(book)));
     }
 
     public boolean deleteBookById(Long id) {
@@ -39,7 +38,7 @@ public class BookService {
             bookRepository.deleteById(id);
             return true;
         }
-        return bookRepository.existsById(id);
+        return false;
     }
 
     public BookDTO updateBook(BookDTO book, Long id) {
