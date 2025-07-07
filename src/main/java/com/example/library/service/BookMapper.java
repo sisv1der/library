@@ -5,16 +5,13 @@ import com.example.library.model.BookDTO;
 
 public class BookMapper {
     public static BookDTO toBookDTO(Book book) {
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setTitle(book.getTitle());
-        bookDTO.setAuthor(book.getAuthor());
-        return bookDTO;
+        return new BookDTO(book.getId(),
+                book.getTitle(),
+                book.getAuthor());
     }
 
     public static Book toBook(BookDTO bookDTO) {
-        Book book = new Book();
-        book.setTitle(bookDTO.getTitle());
-        book.setAuthor(bookDTO.getAuthor());
-        return book;
+        return new Book(bookDTO.title(),
+                bookDTO.author());
     }
 }
