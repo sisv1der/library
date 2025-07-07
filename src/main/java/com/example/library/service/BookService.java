@@ -44,8 +44,8 @@ public class BookService {
     public BookDTO updateBook(BookDTO book, Long id) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
-                    existingBook.setTitle(book.getTitle());
-                    existingBook.setAuthor(book.getAuthor());
+                    existingBook.setTitle(book.title());
+                    existingBook.setAuthor(book.author());
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookMapper.toBookDTO(updatedBook);
                 })
@@ -55,11 +55,11 @@ public class BookService {
     public BookPatchDTO patchBook(BookPatchDTO book, Long id) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
-                    if (book.getTitle() != null) {
-                        existingBook.setTitle(book.getTitle());
+                    if (book.title() != null) {
+                        existingBook.setTitle(book.title());
                     }
-                    if (book.getAuthor() != null) {
-                        existingBook.setAuthor(book.getAuthor());
+                    if (book.author() != null) {
+                        existingBook.setAuthor(book.author());
                     }
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookPatchMapper.toBookPatchDTO(updatedBook);
