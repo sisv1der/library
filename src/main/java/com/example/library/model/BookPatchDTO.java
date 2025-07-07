@@ -1,22 +1,7 @@
 package com.example.library.model;
 
-public class BookPatchDTO {
-    private String title;
-    private String author;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+public record BookPatchDTO(String title, String author) {
+    public static BookPatchDTO from(Book book) {
+        return new BookPatchDTO(book.getTitle(), book.getAuthor());
     }
 }
