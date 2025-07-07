@@ -4,6 +4,7 @@ import com.example.library.model.Book;
 import com.example.library.model.BookDTO;
 import com.example.library.model.BookPatchDTO;
 import com.example.library.repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,6 @@ public class BookService {
     }
 
     public List<BookDTO> getAllBooks() {
-
         return bookRepository.findAll().stream()
                 .map(BookMapper::toBookDTO)
                 .toList();
@@ -26,19 +26,18 @@ public class BookService {
     public BookDTO getDtoById(Long id) {
         return bookRepository.findById(id)
                 .map(BookMapper::toBookDTO)
-                .orElse(null);
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public BookDTO addBook(BookDTO book) {
         return BookMapper.toBookDTO(bookRepository.save(BookMapper.toBook(book)));
     }
 
-    public boolean deleteBookById(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-            return true;
+    public void deleteBookById(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException();
         }
-        return false;
+        bookRepository.deleteById(id);
     }
 
     public BookDTO updateBook(BookDTO book, Long id) {
@@ -49,7 +48,7 @@ public class BookService {
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookMapper.toBookDTO(updatedBook);
                 })
-                .orElse(null);
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public BookPatchDTO patchBook(BookPatchDTO book, Long id) {
@@ -64,6 +63,6 @@ public class BookService {
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookPatchMapper.toBookPatchDTO(updatedBook);
                 })
-                .orElse(null);
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

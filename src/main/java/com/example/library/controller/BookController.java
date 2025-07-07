@@ -22,18 +22,12 @@ public class BookController {
     @GetMapping("/")
     public ResponseEntity<List<BookDTO>> getBooks() {
         List<BookDTO> books = bookService.getAllBooks();
-        if (books.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
         BookDTO book = bookService.getDtoById(id);
-        if (book == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
@@ -45,30 +39,19 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
-        boolean deleted = bookService.deleteBookById(id);
-        if (deleted) {
-            return new ResponseEntity<>("Book deleted.", HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>("Book not found.", HttpStatus.NOT_FOUND);
-        }
+        bookService.deleteBookById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDto, @PathVariable Long id) {
         BookDTO oldBook = bookService.updateBook(bookDto, id);
-        if (oldBook == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<BookPatchDTO> patchBook(@RequestBody BookPatchDTO bookDto, @PathVariable Long id) {
         BookPatchDTO oldBook = bookService.patchBook(bookDto, id);
-        if (oldBook == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
 }
