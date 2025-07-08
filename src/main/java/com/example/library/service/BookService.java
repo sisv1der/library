@@ -4,6 +4,7 @@ import com.example.library.model.Book;
 import com.example.library.model.BookDTO;
 import com.example.library.model.BookPatchDTO;
 import com.example.library.repository.BookRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,9 @@ public class BookService {
     @Transactional
     public BookDTO addBook(BookDTO book) {
         if (book == null) throw new IllegalArgumentException("BookDTO is null");
+        if (bookRepository.findByAuthorAndTitle(book.author(), book.title()).isPresent()) {
+            throw new EntityExistsException("This book is already exists in database");
+        }
         return BookMapper.toBookDTO(bookRepository.save(BookMapper.toBook(book)));
     }
 
