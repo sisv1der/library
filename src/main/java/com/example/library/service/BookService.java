@@ -34,7 +34,6 @@ public class BookService {
     @Transactional
     public BookDTO addBook(BookDTO book) {
         if (book == null) throw new IllegalArgumentException("BookDTO is null");
-        log.info()
         return BookMapper.toBookDTO(bookRepository.save(BookMapper.toBook(book)));
     }
 
