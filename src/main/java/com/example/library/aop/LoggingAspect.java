@@ -15,18 +15,28 @@ public class LoggingAspect {
     @Before("execution(* com.example.library.service.*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.info("Entering method: {} with args: {}", joinPoint.getSignature().getName(),  joinPoint.getArgs());
+        logger.info("Entering class: {} method: {} with args: {}",
+                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getSignature().getName(),
+                joinPoint.getArgs());
     }
 
     @AfterReturning(pointcut = "execution(* com.example.library.service.*.*(..))", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.info("Method: {} with args: {} executed with result: {}", joinPoint.getSignature().getName(), joinPoint.getArgs(), result);
+        logger.info("Class: {} method: {} with args: {} executed with result: {}",
+                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getSignature().getName(),
+                joinPoint.getArgs(), result);
     }
 
     @AfterThrowing(pointcut = "execution(* com.example.library.service.*.*(..))", throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.error("Method: {} with args: {} executed with exception: {}", joinPoint.getSignature().getName(), joinPoint.getArgs(), ex.getMessage());
+        logger.error("Class: {} method: {} with args: {} executed with exception: {}",
+                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getSignature().getName(),
+                joinPoint.getArgs(),
+                ex.getMessage());
     }
 }
