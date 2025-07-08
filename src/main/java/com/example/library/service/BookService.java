@@ -6,9 +6,11 @@ import com.example.library.model.BookPatchDTO;
 import com.example.library.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 @Service
 public class BookService {
     private final BookRepository bookRepository;
@@ -29,18 +31,23 @@ public class BookService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional
     public BookDTO addBook(BookDTO book) {
+        if (book == null) throw new IllegalArgumentException("BookDTO is null");
+        log.info()
         return BookMapper.toBookDTO(bookRepository.save(BookMapper.toBook(book)));
     }
 
+    @Transactional
     public void deleteBookById(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new EntityNotFoundException();
-        }
-        bookRepository.deleteById(id);
+        if (bookRepository.existsById(id)) bookRepository.deleteById(id);
+        else throw new EntityNotFoundException();
     }
 
+    @Transactional
     public BookDTO updateBook(BookDTO book, Long id) {
+        if (book == null) throw new IllegalArgumentException("BookDTO is null");
+
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     existingBook.setTitle(book.title());
@@ -51,7 +58,11 @@ public class BookService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional
     public BookPatchDTO patchBook(BookPatchDTO book, Long id) {
+        if (book == null || book.title() == null && book.author() == null) {
+            throw new IllegalArgumentException("BookPatchDTO or BookPatchDTO's fields is null");
+        }
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     if (book.title() != null) {
