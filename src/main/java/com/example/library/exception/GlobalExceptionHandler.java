@@ -1,5 +1,6 @@
 package com.example.library.exception;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEntityNotFound(EntityNotFoundException exception) {
         ErrorResponse errorResponse = ErrorResponse.of(exception.getMessage(), "NOT_FOUND", List.of());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEntityExists(EntityExistsException exception) {
+        ErrorResponse errorResponse = ErrorResponse.of(exception.getMessage(), "ENTITY_EXISTS", List.of());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
