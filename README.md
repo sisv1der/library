@@ -12,8 +12,8 @@
 - **Jakarta Persistence (JPA)**
 - **PostgreSQL**
 - **Docker** (для базы данных)
-- **Swagger/OpenAPI** (в планах)
-- **Slf4j + Logback** (в планах, для логирования)
+- **Swagger/OpenAPI**
+- **Logback**
 - **JUnit (в планах)**
 
 ## Цель проекта
