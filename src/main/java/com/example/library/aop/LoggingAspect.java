@@ -16,7 +16,7 @@ public class LoggingAspect {
     public void logBefore(JoinPoint joinPoint) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
         logger.info("Entering class: {} method: {} with args: {}",
-                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getTarget().getClass().getSimpleName(),
                 joinPoint.getSignature().getName(),
                 joinPoint.getArgs());
     }
@@ -25,7 +25,7 @@ public class LoggingAspect {
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
         logger.info("Class: {} method: {} with args: {} executed with result: {}",
-                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getTarget().getClass().getSimpleName(),
                 joinPoint.getSignature().getName(),
                 joinPoint.getArgs(), result);
     }
@@ -34,7 +34,7 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
         logger.error("Class: {} method: {} with args: {} executed with exception: {}",
-                joinPoint.getSignature().getClass().getSimpleName(),
+                joinPoint.getTarget().getClass().getSimpleName(),
                 joinPoint.getSignature().getName(),
                 joinPoint.getArgs(),
                 ex.getMessage());
