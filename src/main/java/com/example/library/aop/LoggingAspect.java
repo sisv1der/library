@@ -14,35 +14,47 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LoggingAspect {
-    @Before("execution(* com.example.library.service.*.*(..))")
+    private static final String SERVICE_PACKAGE = "execution(* com.example.library.service.*.*(..))";
+
+    @Before(SERVICE_PACKAGE)
     public void logBefore(JoinPoint joinPoint) {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.info("Entering class: {} method: {} with args: {}",
-                joinPoint.getTarget().getClass().getSimpleName(),
-                joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs())
-        );
+        Logger logger = getLogger(joinPoint);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Class: {} | Entering method: {} | Args: [{}]",
+                    joinPoint.getTarget().getClass().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    Arrays.toString(joinPoint.getArgs())
+            );
+        }
     }
 
-    @AfterReturning(pointcut = "execution(* com.example.library.service.*.*(..))", returning = "result")
+    @AfterReturning(pointcut = SERVICE_PACKAGE, returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.info("Class: {} method: {} with args: {} executed with result: {}",
-                joinPoint.getTarget().getClass().getSimpleName(),
-                joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs()),
-                result
-        );
+        Logger logger = getLogger(joinPoint);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Class: {} | Executed method: {} | Args: {} | Result: [{}]",
+                    joinPoint.getTarget().getClass().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    Arrays.toString(joinPoint.getArgs()),
+                    result
+            );
+        }
     }
 
-    @AfterThrowing(pointcut = "execution(* com.example.library.service.*.*(..))", throwing = "ex")
+    @AfterThrowing(pointcut = SERVICE_PACKAGE, throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.error("Class: {} method: {} with args: {} executed with exception: {}",
-                joinPoint.getTarget().getClass().getSimpleName(),
-                joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs()),
-                ex.getMessage()
-        );
+        Logger logger = getLogger(joinPoint);
+            logger.error("Class: {} | Failed method: {} | Args: {} | Exception: {} - {}",
+                    joinPoint.getTarget().getClass().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    Arrays.toString(joinPoint.getArgs()),
+                    ex.getClass().getSimpleName(),
+                    ex.getMessage(),
+                    ex
+            );
+    }
+
+    private Logger getLogger(JoinPoint joinPoint) {
+        return LoggerFactory.getLogger(joinPoint.getTarget().getClass());
     }
 }
