@@ -62,7 +62,7 @@ public class BookService {
     }
 
     @Transactional
-    public BookPatchDTO patchBook(BookPatchDTO book, Long id) {
+    public BookDTO patchBook(BookPatchDTO book, Long id) {
         if (book == null || book.title() == null && book.author() == null) {
             throw new IllegalArgumentException("BookPatchDTO or BookPatchDTO's fields is null");
         }
@@ -75,7 +75,7 @@ public class BookService {
                         existingBook.setAuthor(book.author());
                     }
                     Book updatedBook = bookRepository.save(existingBook);
-                    return BookPatchMapper.toBookPatchDTO(updatedBook);
+                    return BookMapper.toBookDTO(updatedBook);
                 })
                 .orElseThrow(EntityNotFoundException::new);
     }
