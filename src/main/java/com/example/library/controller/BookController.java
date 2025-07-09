@@ -87,7 +87,7 @@ public class BookController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
-        BookDTO book = bookService.getDtoById(id);
+        BookDTO book = bookService.getBookById(id);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 

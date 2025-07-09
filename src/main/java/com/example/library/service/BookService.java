@@ -26,7 +26,7 @@ public class BookService {
                 .toList();
     }
 
-    public BookDTO getDtoById(Long id) {
+    public BookDTO getBookById(Long id) {
         return bookRepository.findById(id)
                 .map(BookMapper::toBookDTO)
                 .orElseThrow(EntityNotFoundException::new);
