@@ -1,12 +1,10 @@
 package com.example.library.service;
 
-import com.example.library.model.Book;
-import com.example.library.model.BookDTO;
-import com.example.library.model.BookPatchDTO;
-import com.example.library.model.BookPostDTO;
+import com.example.library.model.*;
 import com.example.library.repository.BookRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +46,7 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO updateBook(BookDTO book, Long id) {
+    public BookDTO updateBook(BookPutDTO book, Long id) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     existingBook.setTitle(book.title());
@@ -61,20 +59,27 @@ public class BookService {
 
     @Transactional
     public BookDTO patchBook(BookPatchDTO book, Long id) {
-        if (book.title() == null && book.author() == null) {
+        if (isBookPatchDTOEmpty(book)) {
             throw new IllegalArgumentException("Nothing to update");
         }
         return bookRepository.findById(id)
                 .map(existingBook -> {
-                    if (book.title() != null) {
+                    if (StringUtils.isNotBlank(book.title())) {
                         existingBook.setTitle(book.title());
                     }
-                    if (book.author() != null) {
+                    if (StringUtils.isNotBlank(book.author())) {
                         existingBook.setAuthor(book.author());
                     }
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookMapper.toBookDTO(updatedBook);
                 })
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    private boolean isBookPatchDTOEmpty(BookPatchDTO bookPatchDTO) {
+        if (bookPatchDTO == null) return true;
+        boolean isTitleEmpty = StringUtils.isBlank(bookPatchDTO.title());
+        boolean isAuthorEmpty = StringUtils.isBlank(bookPatchDTO.author());
+        return isTitleEmpty && isAuthorEmpty;
     }
 }
