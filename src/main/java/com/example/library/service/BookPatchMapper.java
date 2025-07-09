@@ -3,6 +3,7 @@ package com.example.library.service;
 import com.example.library.model.Book;
 import com.example.library.model.BookPatchDTO;
 
+@Deprecated
 public class BookPatchMapper {
     public static BookPatchDTO toBookPatchDTO(Book book) {
         if (book == null) {
