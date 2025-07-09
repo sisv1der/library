@@ -34,7 +34,6 @@ public class BookService {
 
     @Transactional
     public BookDTO addBook(BookDTO book) {
-        if (book == null) throw new IllegalArgumentException("BookDTO is null");
         if (bookRepository.findByAuthorAndTitle(book.author(), book.title()).isPresent()) {
             throw new EntityExistsException("This book is already exists in database");
         }
@@ -49,8 +48,6 @@ public class BookService {
 
     @Transactional
     public BookDTO updateBook(BookDTO book, Long id) {
-        if (book == null) throw new IllegalArgumentException("BookDTO is null");
-
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     existingBook.setTitle(book.title());
@@ -63,8 +60,8 @@ public class BookService {
 
     @Transactional
     public BookDTO patchBook(BookPatchDTO book, Long id) {
-        if (book == null || book.title() == null && book.author() == null) {
-            throw new IllegalArgumentException("BookPatchDTO or BookPatchDTO's fields is null");
+        if (book.title() == null && book.author() == null) {
+            throw new IllegalArgumentException("Nothing to update");
         }
         return bookRepository.findById(id)
                 .map(existingBook -> {

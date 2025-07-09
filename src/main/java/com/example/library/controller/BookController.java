@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
@@ -124,7 +125,7 @@ public class BookController {
             }
     )
     @PostMapping("/")
-    public ResponseEntity<BookDTO> addBook(@Valid @RequestBody BookDTO book) {
+    public ResponseEntity<BookDTO> addBook(@Valid @NotNull @RequestBody BookDTO book) {
         BookDTO newBook = bookService.addBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
@@ -207,7 +208,7 @@ public class BookController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDto, @PathVariable Long id) {
+    public ResponseEntity<BookDTO> updateBook(@Valid @NotNull @RequestBody BookDTO bookDto, @PathVariable Long id) {
         BookDTO oldBook = bookService.updateBook(bookDto, id);
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
@@ -250,7 +251,7 @@ public class BookController {
             }
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<BookDTO> patchBook(@RequestBody BookPatchDTO bookDto, @PathVariable Long id) {
+    public ResponseEntity<BookDTO> patchBook(@RequestBody @NotNull BookPatchDTO bookDto, @PathVariable Long id) {
         BookDTO oldBook = bookService.patchBook(bookDto, id);
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
