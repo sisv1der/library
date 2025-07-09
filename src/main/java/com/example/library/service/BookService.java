@@ -3,6 +3,7 @@ package com.example.library.service;
 import com.example.library.model.Book;
 import com.example.library.model.BookDTO;
 import com.example.library.model.BookPatchDTO;
+import com.example.library.model.BookPutDTO;
 import com.example.library.repository.BookRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,7 +34,7 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO addBook(BookDTO book) {
+    public BookDTO addBook(BookPutDTO book) {
         if (bookRepository.findByAuthorAndTitle(book.author(), book.title()).isPresent()) {
             throw new EntityExistsException("This book is already exists in database");
         }

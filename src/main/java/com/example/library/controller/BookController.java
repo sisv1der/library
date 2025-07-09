@@ -2,6 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.model.BookDTO;
 import com.example.library.model.BookPatchDTO;
+import com.example.library.model.BookPutDTO;
 import com.example.library.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -99,7 +100,7 @@ public class BookController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Book data that needs to be updated",
                     required = true,
-                    content = @Content(schema = @Schema(implementation = BookDTO.class))
+                    content = @Content(schema = @Schema(implementation = BookPutDTO.class))
             ),
             responses = {
                     @ApiResponse(
@@ -125,7 +126,7 @@ public class BookController {
             }
     )
     @PostMapping("/")
-    public ResponseEntity<BookDTO> addBook(@Valid @NotNull @RequestBody BookDTO book) {
+    public ResponseEntity<BookDTO> addBook(@Valid @NotNull @RequestBody BookPutDTO book) {
         BookDTO newBook = bookService.addBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
