@@ -1,7 +1,8 @@
-package com.example.library.service;
+package com.example.library.unit.service;
 
 import com.example.library.model.*;
 import com.example.library.repository.BookRepository;
+import com.example.library.service.BookService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
