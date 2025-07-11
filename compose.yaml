@@ -11,19 +11,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin_library
+  app:
+    build: .
+    container_name: app
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_library
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
     ports:
-      - "5050:80"
+      - "8080:8080"
     depends_on:
       - postgres
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   pgdata:
-  pgadmin-data:
