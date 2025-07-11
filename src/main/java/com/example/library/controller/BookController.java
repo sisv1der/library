@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,7 @@ public class BookController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
+    public ResponseEntity<BookDTO> getBook(@PathVariable @Min(1) Long id) {
         BookDTO book = bookService.getBookById(id);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
@@ -167,7 +168,7 @@ public class BookController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable @Min(1) Long id) {
         bookService.deleteBookById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -212,7 +213,7 @@ public class BookController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@Valid @NotNull @RequestBody BookPutDTO bookPutDTO, @PathVariable Long id) {
+    public ResponseEntity<BookDTO> updateBook(@Valid @NotNull @RequestBody BookPutDTO bookPutDTO, @PathVariable @Min(1) Long id) {
         BookDTO oldBook = bookService.updateBook(bookPutDTO, id);
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }
@@ -255,7 +256,7 @@ public class BookController {
             }
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<BookDTO> patchBook(@RequestBody @NotNull BookPatchDTO bookDto, @PathVariable Long id) {
+    public ResponseEntity<BookDTO> patchBook(@RequestBody @NotNull BookPatchDTO bookDto, @PathVariable @Min(1) Long id) {
         BookDTO oldBook = bookService.patchBook(bookDto, id);
         return new ResponseEntity<>(oldBook, HttpStatus.OK);
     }

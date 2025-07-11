@@ -10,6 +10,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -42,6 +43,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
         ErrorResponse errorResponse = ErrorResponse.of(exception.getMessage(), "BAD_REQUEST", List.of());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException exception) {
+        ErrorResponse errorResponse = ErrorResponse.of(
+                String.format("Invalid value '%s' for parameter '%s'. Expected type: '%s'",
+                        exception.getValue(),
+                        exception.getParameter().getParameterName(),
+                        exception.getRequiredType() != null ? exception.getRequiredType().getSimpleName() : "unknown"
+                ), "BAD_REQUEST", List.of());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
