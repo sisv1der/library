@@ -1,8 +1,5 @@
 name: CI-Test
 
-env:
-  CI: true
-
 on:
   push:
     branches: [ "master" ]
