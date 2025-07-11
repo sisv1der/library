@@ -28,7 +28,7 @@ public class BookService {
     public BookDTO getBookById(Long id) {
         return bookRepository.findById(id)
                 .map(BookMapper::toBookDTO)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Book not found."));
     }
 
     @Transactional
@@ -42,7 +42,7 @@ public class BookService {
     @Transactional
     public void deleteBookById(Long id) {
         if (bookRepository.existsById(id)) bookRepository.deleteById(id);
-        else throw new EntityNotFoundException();
+        else throw new EntityNotFoundException("Book not found.");
     }
 
     @Transactional
@@ -54,7 +54,7 @@ public class BookService {
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookMapper.toBookDTO(updatedBook);
                 })
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Book not found."));
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class BookService {
                     Book updatedBook = bookRepository.save(existingBook);
                     return BookMapper.toBookDTO(updatedBook);
                 })
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Book not found."));
     }
 
     private boolean isBookPatchDTOEmpty(BookPatchDTO bookPatchDTO) {
